@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { client } from "@/graphql/graphql-client";
 import { gql } from "graphql-request";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FaHeart } from "react-icons/fa";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int) {
@@ -25,7 +28,6 @@ const GET_CHARACTERS = gql`
 
 export function CharacterList({
     filters,
-    onSelectCharacter,
   }: {
     filters: {
       status: string;
@@ -33,7 +35,6 @@ export function CharacterList({
       gender: string;
       sortOrder: string;
     };
-    onSelectCharacter: (id: string) => void;
   }) 
     {
         const [characters, setCharacters] = useState<any[]>([]);
@@ -41,6 +42,11 @@ export function CharacterList({
         const [loadingMore, setLoadingMore] = useState(false);
         const [page, setPage] = useState(1);
         const [hasNextPage, setHasNextPage] = useState(true);
+        const navigate = useNavigate();
+        const favorites = useFavoritesStore((state) => state.favoriteIds);
+        const addFavorite = useFavoritesStore((state) => state.addFavorite);
+        const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
+
 
         const filteredCharacters = characters
             .filter((char) => {
@@ -98,6 +104,14 @@ export function CharacterList({
             loadCharacters(1, false);
         }, []);
 
+        const toggleFavorite = (id: string) => {
+            if (favorites.includes(id)) {
+              removeFavorite(id);
+            } else {
+              addFavorite(id);
+            }
+        };
+
         const handleLoadMore = () => {
             const nextPage = page + 1;
             setPage(nextPage);
@@ -121,17 +135,32 @@ export function CharacterList({
                     <Card
                         key={character.id}
                         className="flex items-center gap-4 cursor-pointer hover:bg-gray-100 transition"
-                        onClick={() => onSelectCharacter(character.id)}
+                        onClick={() => navigate(`/characters/${character.id}`)}
                     >
-                        <img
-                            src={character.image}
-                            alt={character.name}
-                            className="w-14 h-14 rounded-full object-cover"
-                        />
-                        <CardContent className="p-4">
-                            <p className="font-semibold">{character.name}</p>
-                            <p className="text-xs text-gray-500">{character.species}</p>
-                        </CardContent>
+                        <div className="flex items-center gap-4">
+                            <img
+                                src={character.image}
+                                alt={character.name}
+                                className="w-14 h-14 rounded-full object-cover"
+                            />
+                            <CardContent className="p-4">
+                                <p className="font-semibold">{character.name}</p>
+                                <p className="text-xs text-gray-500">{character.species}</p>
+                            </CardContent>
+                        </div>
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                toggleFavorite(character.id);
+                            }}
+                            className="mr-4"
+                        >
+                            <FaHeart
+                                className={`text-xl transition ${
+                                    favorites.includes(character.id) ? "text-green-500" : "text-gray-400"
+                                }`}
+                            />
+                        </button>
                     </Card>
                 ))}
 

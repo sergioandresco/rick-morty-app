@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import { HeaderDashboard } from "@/components/header/dashboard";
 import { CharacterList } from "@/components/characterList";
 import { CharacterDetail } from "@/components/characterDetail";
@@ -22,16 +23,12 @@ export default function DashboardPage() {
                 <div className="p-4">
                     <h1 className="text-xl font-bold mb-4">Rick and Morty list</h1>
                     <DashboardFilters filters={filters} onFilterChange={setFilters} />
-                    <CharacterList filters={filters} onSelectCharacter={setSelectedCharacterId} />
+                    <CharacterList filters={filters}/>
                 </div>
             </div>
 
             <div className="flex-1 p-6 overflow-y-auto">
-                {selectedCharacterId ? (
-                    <CharacterDetail characterId={selectedCharacterId} />
-                    ) : (
-                    <p className="text-gray-400">Selecciona un personaje para ver detalles.</p>
-                )}
+                <Outlet />
             </div>
         </div>
     </>

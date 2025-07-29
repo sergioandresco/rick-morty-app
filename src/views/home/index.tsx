@@ -29,7 +29,7 @@ export default function HomePage() {
             </SignedOut>
 
             <SignedIn>
-                <Link to="/dashboard">
+                <Link to="/characters">
                     <Button variant="secondary">Go to Characters</Button>
                 </Link>
             </SignedIn>

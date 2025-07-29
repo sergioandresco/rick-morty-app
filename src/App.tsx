@@ -3,6 +3,8 @@ import { SignIn, SignUp } from "@clerk/clerk-react";
 import ProtectedRoute from "./protectedRoute";
 import HomePage from "./views/home";
 import DashboardPage from "./views/dashboard";
+import CharacterDetailPage from "./pages/characterDetailPage";
+import { FavoritesPage } from "./pages/favoritesPage";
 
 const router = createBrowserRouter([
 	{
@@ -28,13 +30,23 @@ const router = createBrowserRouter([
 	  ),
 	},
 	{
-	  path: "/dashboard",
-	  element: (
+    path: "/characters",
+    element: (
       <ProtectedRoute allowedRoles={["admin", "user"]}>
         <DashboardPage />
       </ProtectedRoute>
-	  ),
-	},
+    ),
+    children: [
+      {
+        path: ":id",
+        element: <CharacterDetailPage />,
+      },
+      {
+        path: "favorites",
+        element: <FavoritesPage />,
+      },
+    ],
+  },
 ]);
 
 function App() {

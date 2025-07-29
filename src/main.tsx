@@ -20,8 +20,8 @@ createRoot(document.getElementById('root')!).render(
 			}}
 			publishableKey={PUBLISHABLE_KEY}
 			localization={esMX}
-			signUpFallbackRedirectUrl="/dashboard"
-      		signInFallbackRedirectUrl="/dashboard"
+			signUpFallbackRedirectUrl="/characters"
+      		signInFallbackRedirectUrl="/characters"
 		>
       <App />
 		</ClerkProvider>

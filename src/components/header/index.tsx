@@ -42,7 +42,7 @@ export function Header() {
         <div className="flex items-center gap-4">
           {user && (role === "admin" || role === "user") && (
             <Link
-              to="/dashboard"
+              to="/characters"
               className="text-white hover:text-purple-300 text-sm font-medium"
             >
               Dashboard
