@@ -137,45 +137,57 @@ export function CharacterList({
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 mt-6">
+
+            <p className="text-[#6B7280]">
+                Characters ({filteredCharacters.length})
+            </p>
 
             {filteredCharacters.map((character) => (
                 <Card
                     key={character.id}
-                    className="flex items-center gap-4 cursor-pointer hover:bg-gray-100 transition"
+                    className="flex flex-row border-0 border-t border-t-[#E5E7EB] rounded-none shadow-none p-0 m-0"
                     onClick={() => navigate(`/characters/${character.id}`)}
                 >
-                    <div className="flex items-center gap-4">
-                        <img
-                            src={character.image}
-                            alt={character.name}
-                            className="w-14 h-14 rounded-full object-cover"
-                        />
-                        <CardContent className="p-4">
-                            <p className="font-semibold">{character.name}</p>
-                            <p className="text-xs text-gray-500">{character.species}</p>
-                        </CardContent>
-                    </div>
-                    <div className="flex items-center gap-2 pr-4">
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                toggleFavorite(character.id);
-                            }}
-                        >
-                            <FaHeart
-                                className={`text-xl transition ${favorites.includes(character.id) ? "text-green-500" : "text-gray-400"
-                                    }`}
+                    <div
+                        className="w-full flex flex-row px-2 cursor-pointer hover:bg-[#EEE3FF] transition m-0 rounded-[8px]"
+                    >
+                        <div className="flex items-center gap-1">
+                            <img
+                                src={character.image}
+                                alt={character.name}
+                                className="w-14 h-14 rounded-full object-cover"
                             />
-                        </button>
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleSoftDelete(character.id);
-                            }}
-                        >
-                            <MdDelete className="text-xl text-red-500 hover:text-red-600 transition" />
-                        </button>
+                            <CardContent className="p-4">
+                                <div className="min-w-[140px] max-w-[140px]">
+                                    <p className="font-[500] text-[16px]">{character.name}</p>
+                                </div>
+                                <div className="min-w-[140px] max-w-[140px]">
+                                    <p className="text-gray-500 text-[16px] font-[400]">{character.species}</p>
+                                </div>
+                            </CardContent>
+                        </div>
+                        <div className="flex items-center gap-2 pr-4">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleFavorite(character.id);
+                                }}
+                            >
+                                <FaHeart
+                                    className={`text-xl transition ${favorites.includes(character.id) ? "text-green-500" : "text-gray-400"
+                                        }`}
+                                />
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleSoftDelete(character.id);
+                                }}
+                            >
+                                <MdDelete className="text-xl text-red-500 hover:text-red-600 transition" />
+                            </button>
+                        </div>
                     </div>
                 </Card>
             ))}

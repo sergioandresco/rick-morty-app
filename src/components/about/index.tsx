@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 function About() {
     return (
         <section className="w-full min-h-screen flex items-center justify-center bg-[#0b0c10] px-4 py-20">
-            <div className="flex flex-col gap-11 max-w-4xl w-full space-y-6 text-white text-center">
+            <div className="flex flex-col gap-6 sm:gap-11 max-w-4xl w-full space-y-6 text-white text-center">
                 <h2 className="text-3xl md:text-5xl sm:text-4xl font-bold text-[#C8DC61]">
                     What is Rick and Morty Docs?
                 </h2>

@@ -36,7 +36,7 @@ export function Header() {
           transition={{ duration: 1 }}
         >
           <h1 
-            className="text-white text-4xl"
+            className="text-white text-[23px] sm:text-4xl"
             style={{ WebkitTextStroke: '1px #C8DC61' }}
           >
             Rick and Morty Docs
