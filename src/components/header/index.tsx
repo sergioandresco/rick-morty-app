@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react"
-import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Button } from '@/components/ui/button';
 
 export function Header() {
   
@@ -24,7 +25,7 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-black/80 backdrop-blur shadow" : "bg-transparent"
+        scrolled ? "backdrop-blur shadow" : "bg-transparent"
       }`}
     >
       <div className="flex items-center justify-between px-6 py-4">
@@ -34,9 +35,12 @@ export function Header() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <span className="bg-gradient-to-r from-yellow-300 via-purple-500 to-pink-400 bg-clip-text text-transparent">
+          <h1 
+            className="text-white text-4xl"
+            style={{ WebkitTextStroke: '1px #C8DC61' }}
+          >
             Rick and Morty Docs
-          </span>
+          </h1>
         </motion.h1>
 
         <div className="flex items-center gap-4">
@@ -54,9 +58,11 @@ export function Header() {
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="rounded-full bg-purple-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-purple-500">
+              <Button
+                className="bg-[#C8DC61] text-[#0b0c10] hover:bg-[#12B1CB] cursor-pointer"
+              >
                 Sign In
-              </button>
+              </Button>
             </SignInButton>
           </SignedOut>
         </div>

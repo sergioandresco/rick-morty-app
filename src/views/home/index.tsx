@@ -1,37 +1,24 @@
 import { Header } from "@/components/header";
-import { Link } from 'react-router-dom';
-import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
-import { Button } from '@/components/ui/button';
-import GifHero from '../../assets/rick-morty-gif.gif';
+import Hero from "@/components/hero";
+import About from "@/components/about";
+import Footer from "@/components/footer";
 
 export default function HomePage() {
   return (
     <>
         <Header />
-        <section className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Welcome to the Rick & Morty Universe</h1>
+        <section>
 
-            <img
-                src={GifHero}
-                alt="Rick and Morty"
-                className="mx-auto w-full max-w-md mb-6 rounded-lg shadow-lg"
-            />
+            <div className="min-h-screen">
+                <Hero />
+            </div>
 
-            <p className="text-lg mb-6">
-                Explore characters, mark your favorites, and leave comments. Built with ❤️ using React, GraphQL, and Tailwind.
-            </p>
+            <div className="min-h-screen">
+                <About />
+            </div>
 
-            <SignedOut>
-                <SignInButton mode="modal">
-                <Button>Start Exploring</Button>
-                </SignInButton>
-            </SignedOut>
-
-            <SignedIn>
-                <Link to="/characters">
-                    <Button variant="secondary">Go to Characters</Button>
-                </Link>
-            </SignedIn>
+            <Footer />
+            
         </section>
     </>
   );

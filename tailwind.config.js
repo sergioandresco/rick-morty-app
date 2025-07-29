@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
     content: [
       "./index.html",
@@ -6,6 +7,11 @@ export default {
     ],
     theme: {
       extend: {
+        fontFamily: {
+          sans: ['GT Planar', 'sans-serif'],
+          heading: ['Acorn', 'sans-serif'],
+          schwifty: ['GetSchwifty', 'cursive'],
+        },
         colors: {
           primary: {
             100: "#EDE4FF",

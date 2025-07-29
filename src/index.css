@@ -1,5 +1,21 @@
+@import url('./resources/fonts/get-schwifty/stylesheet.css');
+@import url('./resources/fonts/acorn/stylesheet.css');
+@import url('./resources/fonts/gt-planar/stylesheet.css');
 @import "tailwindcss";
 @import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'GetSchwifty', sans-serif;
+  }
+
+  p {
+    font-family: 'Acorn', sans-serif;
+  }
+}
 
 #root{
   margin: 0 !important;
