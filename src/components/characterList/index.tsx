@@ -1,0 +1,166 @@
+import { useEffect, useState } from "react";
+import { client } from "@/graphql/graphql-client";
+import { gql } from "graphql-request";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const GET_CHARACTERS = gql`
+  query GetCharacters($page: Int) {
+    characters(page: $page) {
+        results {
+          id
+          name
+          image
+          species
+          status
+          gender
+        }
+        info {
+          next
+          pages
+        }
+    }
+  }
+`;
+
+export function CharacterList({
+    filters,
+    onSelectCharacter,
+  }: {
+    filters: {
+      status: string;
+      species: string;
+      gender: string;
+      sortOrder: string;
+    };
+    onSelectCharacter: (id: string) => void;
+  }) 
+    {
+        const [characters, setCharacters] = useState<any[]>([]);
+        const [loading, setLoading] = useState(true);
+        const [loadingMore, setLoadingMore] = useState(false);
+        const [page, setPage] = useState(1);
+        const [hasNextPage, setHasNextPage] = useState(true);
+
+        const filteredCharacters = characters
+            .filter((char) => {
+                const matchStatus =
+                filters.status === "all" || char.status?.toLowerCase() === filters.status;
+                const matchSpecies =
+                filters.species === "all" || char.species?.toLowerCase().includes(filters.species.toLowerCase());
+                const matchGender =
+                filters.gender === "all" || char.gender?.toLowerCase() === filters.gender;
+
+                return matchStatus && matchSpecies && matchGender;
+            })
+            .sort((a, b) => {
+                if (filters.sortOrder === "asc") {
+                    return a.name.localeCompare(b.name);
+                } else {
+                    return b.name.localeCompare(a.name);
+                }
+            });
+
+        const loadCharacters = async (pageToLoad: number, isLoadMore = false) => {
+            if (isLoadMore) {
+                setLoadingMore(true);
+            } else {
+                setLoading(true);
+            }
+
+            try {
+                const data = await client.request(GET_CHARACTERS, { page: pageToLoad });
+                
+                setCharacters((prev) => {
+                    if (isLoadMore) {
+                        const newCharacters = data.characters.results;
+                        const merged = [...prev, ...newCharacters];
+                        const unique = Array.from(new Map(merged.map((c) => [c.id, c])).values());
+                        return unique;
+                    } else {
+                        return data.characters.results;
+                    }
+                });
+
+                setHasNextPage(!!data.characters.info.next);
+            } catch (error) {
+                console.error("Error loading characters:", error);
+            } finally {
+                if (isLoadMore) {
+                    setLoadingMore(false);
+                } else {
+                    setLoading(false);
+                }
+            }
+        };
+
+        useEffect(() => {
+            loadCharacters(1, false);
+        }, []);
+
+        const handleLoadMore = () => {
+            const nextPage = page + 1;
+            setPage(nextPage);
+            loadCharacters(nextPage, true);
+        };
+
+        if (loading && characters.length === 0) {
+            return (
+                <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                        <Skeleton key={i} className="w-full h-20 rounded-xl" />
+                    ))}
+                </div>
+            );
+        }
+
+        return (
+            <div className="space-y-4">
+
+                {filteredCharacters.map((character) => (
+                    <Card
+                        key={character.id}
+                        className="flex items-center gap-4 cursor-pointer hover:bg-gray-100 transition"
+                        onClick={() => onSelectCharacter(character.id)}
+                    >
+                        <img
+                            src={character.image}
+                            alt={character.name}
+                            className="w-14 h-14 rounded-full object-cover"
+                        />
+                        <CardContent className="p-4">
+                            <p className="font-semibold">{character.name}</p>
+                            <p className="text-xs text-gray-500">{character.species}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+
+                {loadingMore && (
+                    <div className="space-y-4">
+                        {[...Array(3)].map((_, i) => (
+                            <Skeleton key={`loading-${i}`} className="w-full h-20 rounded-xl" />
+                        ))}
+                    </div>
+                )}
+
+                {hasNextPage && !loadingMore && (
+                    <div className="text-center mt-4">
+                        <button
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50"
+                            onClick={handleLoadMore}
+                            disabled={loadingMore}
+                        >
+                            Cargar más
+                        </button>
+                    </div>
+                )}
+
+                {/* Mensaje cuando no hay más páginas */}
+                {!hasNextPage && characters.length > 0 && (
+                    <div className="text-center mt-4 text-gray-500">
+                        <p>No hay más personajes para cargar</p>
+                    </div>
+                )}
+            </div>
+        );
+}
