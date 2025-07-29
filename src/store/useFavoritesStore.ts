@@ -12,16 +12,16 @@ export const useFavoritesStore = create<FavoritesStore>((set) => ({
 
     addFavorite: (id) =>
         set((state) => {
-        const updated = [...state.favoriteIds, id];
-        localStorage.setItem("favorites", JSON.stringify(updated));
-        return { favoriteIds: updated };
+            const updated = [...state.favoriteIds, id];
+            localStorage.setItem("favorites", JSON.stringify(updated));
+            return { favoriteIds: updated };
         }),
 
     removeFavorite: (id) =>
         set((state) => {
-        const updated = state.favoriteIds.filter((favId) => favId !== id);
-        localStorage.setItem("favorites", JSON.stringify(updated));
-        return { favoriteIds: updated };
+            const updated = state.favoriteIds.filter((favId) => favId !== id);
+            localStorage.setItem("favorites", JSON.stringify(updated));
+            return { favoriteIds: updated };
         }),
 
     setFavorites: (ids) => {
