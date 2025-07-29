@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { client } from "@/graphql/graphql-client";
 import { gql } from "graphql-request";
+import type { GetCharactersResponse } from "@/types/character";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaHeart } from "react-icons/fa";
@@ -80,18 +81,20 @@ export function CharacterList({
         }
 
         try {
-            const data = await client.request(GET_CHARACTERS, { page: pageToLoad });
+            const data = await client.request<GetCharactersResponse>(GET_CHARACTERS, {
+                page: pageToLoad,
+            });
 
             setCharacters((prev) => {
                 if (isLoadMore) {
-                    const newCharacters = data.characters.results;
-                    const merged = [...prev, ...newCharacters];
-                    const unique = Array.from(new Map(merged.map((c) => [c.id, c])).values());
-                    return unique;
+                  const newCharacters = data.characters.results;
+                  const merged = [...prev, ...newCharacters];
+                  const unique = Array.from(new Map(merged.map((c) => [c.id, c])).values());
+                  return unique;
                 } else {
-                    return data.characters.results;
+                  return data.characters.results;
                 }
-            });
+              });
 
             setHasNextPage(!!data.characters.info.next);
         } catch (error) {

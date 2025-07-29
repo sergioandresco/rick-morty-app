@@ -2,11 +2,10 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { HeaderDashboard } from "@/components/header/dashboard";
 import { CharacterList } from "@/components/characterList";
-import { CharacterDetail } from "@/components/characterDetail";
 import { DashboardFilters } from "@/components/dashboardFilters";
 
 export default function DashboardPage() {
-  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
+  
   const [filters, setFilters] = useState({
     status: "all",
     species: "all",

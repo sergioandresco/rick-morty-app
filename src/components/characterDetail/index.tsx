@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { client } from "@/graphql/graphql-client";
 import { gql } from "graphql-request";
+import type { Character } from "@/types/character";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -53,7 +54,7 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
     useEffect(() => {
         setLoading(true);
         client
-            .request(GET_CHARACTER, { id: characterId })
+            .request<Character>(GET_CHARACTER, { id: characterId })
             .then((data) => setCharacter(data.character))
             .finally(() => setLoading(false));
     }, [characterId]);

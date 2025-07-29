@@ -1,9 +1,8 @@
 import { Header } from "@/components/header";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import GifHero from '../../assets/rick-morty-gif.gif'
+import { Button } from '@/components/ui/button';
+import GifHero from '../../assets/rick-morty-gif.gif';
 
 export default function HomePage() {
   return (

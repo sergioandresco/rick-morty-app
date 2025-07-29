@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react"
 import { Link } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 
 export function Header() {
-  const [index, setIndex] = useState(0)
+  
   const [scrolled, setScrolled] = useState(false)
 
   const { user } = useUser()

@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FaHeart } from "react-icons/fa";
 import { client } from "@/graphql/graphql-client";
 import { gql } from "graphql-request";
+import type { GetFavoriteCharacters } from "@/types/favoriteCharacters";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 
 const GET_FAVORITES = gql`
@@ -19,7 +20,7 @@ const GET_FAVORITES = gql`
   }
 `;
 
-export function FavoritesPage() {
+function FavoritesPage() {
     const navigate = useNavigate();
     const [favoriteCharacters, setFavoriteCharacters] = useState<any[]>([]);
     const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
@@ -32,7 +33,7 @@ export function FavoritesPage() {
         }
 
         client
-        .request(GET_FAVORITES, { ids: favoriteIds })
+        .request<GetFavoriteCharacters>(GET_FAVORITES, { ids: favoriteIds })
         .then((data) => {
             setFavoriteCharacters(data.charactersByIds || []);
         });
@@ -84,3 +85,5 @@ export function FavoritesPage() {
         </div>
     );
 }
+
+export default FavoritesPage;

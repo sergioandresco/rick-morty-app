@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { user, isLoaded } = useUser();
-  const role = user?.publicMetadata?.role || "user";
+  const role = (user?.publicMetadata?.role as string) || "user";
 
   if (!isLoaded) return null;
 
