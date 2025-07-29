@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { client } from "@/graphql/graphql-client";
 import { gql } from "graphql-request";
 import type { GetCharactersResponse } from "@/types/character";
+import type { GetFavoriteCharacters } from "@/types/favoriteCharacters";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaHeart } from "react-icons/fa";
@@ -28,6 +29,19 @@ const GET_CHARACTERS = gql`
   }
 `;
 
+const GET_FAVORITES = gql`
+  query CharactersByIds($ids: [ID!]!) {
+    charactersByIds(ids: $ids) {
+      id
+      name
+      image
+      species
+      status
+      gender
+    }
+  }
+`;
+
 export function CharacterList({
     filters,
 }: {
@@ -49,6 +63,21 @@ export function CharacterList({
     const addFavorite = useFavoritesStore((state) => state.addFavorite);
     const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
     const [deletedCharacters, setDeletedCharacters] = useState<string[]>([]);
+
+    const [favoriteCharacters, setFavoriteCharacters] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (favorites.length === 0) {
+            setFavoriteCharacters([]);
+            return;
+        }
+
+        client
+            .request<GetFavoriteCharacters>(GET_FAVORITES, { ids: favorites })
+            .then((data) => {
+                setFavoriteCharacters(data.charactersByIds || []);
+            });
+    }, [favorites]);
 
 
     const handleSoftDelete = (id: string) => {
@@ -87,14 +116,14 @@ export function CharacterList({
 
             setCharacters((prev) => {
                 if (isLoadMore) {
-                  const newCharacters = data.characters.results;
-                  const merged = [...prev, ...newCharacters];
-                  const unique = Array.from(new Map(merged.map((c) => [c.id, c])).values());
-                  return unique;
+                    const newCharacters = data.characters.results;
+                    const merged = [...prev, ...newCharacters];
+                    const unique = Array.from(new Map(merged.map((c) => [c.id, c])).values());
+                    return unique;
                 } else {
-                  return data.characters.results;
+                    return data.characters.results;
                 }
-              });
+            });
 
             setHasNextPage(!!data.characters.info.next);
         } catch (error) {
@@ -139,7 +168,61 @@ export function CharacterList({
     return (
         <div className="space-y-4 mt-6">
 
-            <p className="text-[#6B7280]">
+            <p className="text-[#6B7280] mt-5">
+                Starred Characters ({filteredCharacters.length})
+            </p>
+
+            {favoriteCharacters.length > 0 && (
+                <>
+                    {favoriteCharacters.map((character) => (
+                        <Card
+                            key={character.id}
+                            className="flex flex-row border-0 border-t border-t-[#E5E7EB] rounded-none shadow-none p-0 m-0"
+                            onClick={() => navigate(`/characters/${character.id}`)}
+                        >
+                            <div
+                                className="w-full flex flex-row px-2 cursor-pointer hover:bg-[#EEE3FF] transition m-0 rounded-[8px]"
+                            >
+                                <div className="flex items-center gap-1">
+                                    <img
+                                        src={character.image}
+                                        alt={character.name}
+                                        className="w-14 h-14 rounded-full object-cover"
+                                    />
+                                    <CardContent className="p-4">
+                                        <div className="min-w-[140px] max-w-[140px]">
+                                            <p className="font-[500] text-[16px]">{character.name}</p>
+                                        </div>
+                                        <div className="min-w-[140px] max-w-[140px]">
+                                            <p className="text-gray-500 text-[16px] font-[400]">{character.species}</p>
+                                        </div>
+                                    </CardContent>
+                                </div>
+                                <div className="flex items-center gap-2 pr-4">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleFavorite(character.id);
+                                        }}
+                                    >
+                                        <FaHeart className="text-xl text-green-500 transition" />
+                                    </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleSoftDelete(character.id);
+                                        }}
+                                    >
+                                        <MdDelete className="text-xl text-red-500 hover:text-red-600 transition" />
+                                    </button>
+                                </div>
+                            </div>
+                        </Card>
+                    ))}
+                </>
+            )}
+
+            <p className="text-[#6B7280] mt-5">
                 Characters ({filteredCharacters.length})
             </p>
 
