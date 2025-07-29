@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useCommentsStore } from "@/store/useCommentsStore";
 import { format } from "date-fns";
+import { MdDelete } from "react-icons/md";
 
 const GET_CHARACTER = gql`
   query GetCharacter($id: ID!) {
@@ -32,8 +33,22 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
     const [loading, setLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
 
-    const comments = useCommentsStore((state) => state.comments[characterId] || []);
     const addComment = useCommentsStore((state) => state.addComment);
+    const removeComment = useCommentsStore((state) => state.removeComment);
+    const getComments = useCommentsStore((state) => state.getComments);
+    
+    const [comments, setComments] = useState(() => getComments(characterId));
+
+    useEffect(() => {
+        setComments(getComments(characterId));
+        
+        const unsubscribe = useCommentsStore.subscribe((state) => {
+            const currentComments = state.comments[characterId] || [];
+            setComments(currentComments);
+        });
+        
+        return unsubscribe;
+    }, [characterId, getComments]);
 
     useEffect(() => {
         setLoading(true);
@@ -47,6 +62,12 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
         if (newComment.trim()) {
             addComment(characterId, newComment.trim());
             setNewComment("");
+        }
+    };
+
+    const handleDeleteComment = (commentId: string) => {
+        if (window.confirm("¿Estás seguro de que quieres eliminar este comentario?")) {
+            removeComment(characterId, commentId);
         }
     };
 
@@ -97,11 +118,23 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
 
             {comments.length > 0 && (
                 <div className="mt-6">
-                    <h4 className="font-semibold text-md mb-2">Comment history</h4>
+                    <h4 className="font-semibold text-md mb-2">
+                        Comment history for {character.name} ({comments.length})
+                    </h4>
                     <ul className="space-y-3">
-                        {[...comments].reverse().map((comment, idx) => (
-                            <li key={idx} className="border p-3 rounded-md">
-                                <p className="text-sm text-gray-700">{comment.text}</p>
+                        {[...comments].reverse().map((comment) => (
+                            <li key={comment.id} className="border p-3 rounded-md relative group">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto w-auto text-red-500 hover:text-red-700 hover:bg-red-50"
+                                    onClick={() => handleDeleteComment(comment.id)}
+                                    title="Eliminar comentario"
+                                >
+                                    <MdDelete size={14} />
+                                </Button>
+                                
+                                <p className="text-sm text-gray-700 pr-8">{comment.text}</p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                     {comment.date ? format(new Date(comment.date), "PPpp") : "Unknown date"}
                                 </p>
