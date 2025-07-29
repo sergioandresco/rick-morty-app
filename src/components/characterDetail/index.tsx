@@ -7,8 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useCommentsStore } from "@/store/useCommentsStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { format } from "date-fns";
 import { MdDelete } from "react-icons/md";
+import { FaHeart } from "react-icons/fa";
 
 const GET_CHARACTER = gql`
   query GetCharacter($id: ID!) {
@@ -30,24 +32,27 @@ const GET_CHARACTER = gql`
 `;
 
 export function CharacterDetail({ characterId }: { characterId: string }) {
+
     const [character, setCharacter] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
+    const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
+    const isFav = character && favoriteIds.includes(character.id.toString());
 
     const addComment = useCommentsStore((state) => state.addComment);
     const removeComment = useCommentsStore((state) => state.removeComment);
     const getComments = useCommentsStore((state) => state.getComments);
-    
+
     const [comments, setComments] = useState(() => getComments(characterId));
 
     useEffect(() => {
         setComments(getComments(characterId));
-        
+
         const unsubscribe = useCommentsStore.subscribe((state) => {
             const currentComments = state.comments[characterId] || [];
             setComments(currentComments);
         });
-        
+
         return unsubscribe;
     }, [characterId, getComments]);
 
@@ -77,34 +82,42 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
 
     return (
         <>
-            <Card className="p-4">
-                <div className="flex items-center gap-4">
-                    <img
-                        src={character.image}
-                        alt={character.name}
-                        className="w-24 h-24 rounded-lg"
-                    />
+            <Card className="p-4 shadow-none border-none">
+                <div className="flex flex-col gap-4">
+                    <div className="relative w-24 h-24">
+                        <img
+                            src={character.image}
+                            alt={character.name}
+                            className="w-24 h-24 rounded-full object-cover"
+                        />
+                        {isFav && (
+                            <FaHeart 
+                                className="absolute bottom-1 right-1 text-green-500 bg-white rounded-full p-[2px] w-5 h-5"
+                                style={{ width: '28px', height: '24px' }}
+                            />
+                        )}
+                    </div>
                     <div>
-                        <h2 className="text-xl font-bold">{character.name}</h2>
-                        <p className="text-sm text-gray-500">
-                            {character.species} - {character.gender}
+                        <h3 className="text-[24px] font-bold">{character.name}</h3>
+                        <p className="font-[400] text-[#6B7280] text-[16px]">
+                            {character.gender}
                         </p>
                     </div>
                 </div>
-                <CardContent className="mt-4 space-y-2">
-                    <p>
-                        <strong>Status:</strong> {character.status}
+                <CardContent className="mt-3 p-0 space-y-2">
+                    <p className="flex flex-col pb-[16px] font-[400] text-[#6B7280] text-[16px] border-0 border-b border-b-[#E5E7EB]">
+                        <strong className="font-[600] text-[#000]">Specie</strong> {character.species}
                     </p>
-                    <p>
-                        <strong>Origin:</strong> {character.origin?.name}
+                    <p className="flex flex-col pb-[16px] font-[400] text-[#6B7280] text-[16px] border-0 border-b border-b-[#E5E7EB]">
+                        <strong className="font-[600] text-[#000]">Status</strong> {character.status}
                     </p>
-                    <p>
-                        <strong>Location:</strong> {character.location?.name}
+                    <p className="flex flex-col pb-[16px] font-[400] text-[#6B7280] text-[16px]">
+                        <strong className="font-[600] text-[#000]">Location</strong> {character.location?.name}
                     </p>
                 </CardContent>
             </Card>
 
-            <div className="mt-6">
+            <div className="flex flex-col gap-4 mt-0 p-4">
                 <h3 className="font-semibold text-lg mb-2">Add a comment</h3>
                 <Textarea
                     placeholder="Write your thoughts about this character..."
@@ -112,29 +125,38 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
                     onChange={(e) => setNewComment(e.target.value)}
                     className="min-h-[100px]"
                 />
-                <Button onClick={handleSaveComment} className="mt-2">
-                    Save Comment
-                </Button>
+                <div className="flex w-full items-center justify-center">
+                    <Button
+                        onClick={handleSaveComment}
+                        disabled={!newComment.trim()}
+                        className={`max-w-[400px] min-w-[400px] mt-2 rounded-[8px] transition-colors ${newComment.trim()
+                                ? "bg-[#8054C7] text-white cursor-pointer"
+                                : "bg-[#F3F4F6] text-gray-400 cursor-not-allowed"
+                            }`}
+                    >
+                        Save Comment
+                    </Button>
+                </div>
             </div>
 
             {comments.length > 0 && (
-                <div className="mt-6">
-                    <h4 className="font-semibold text-md mb-2">
+                <div className="flex flex-col gap-4 mt-6 p-4">
+                    <h3 className="font-semibold text-md mb-2">
                         Comment history for {character.name} ({comments.length})
-                    </h4>
+                    </h3>
                     <ul className="space-y-3">
                         {[...comments].reverse().map((comment) => (
                             <li key={comment.id} className="border p-3 rounded-md relative group">
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto w-auto text-red-500 hover:text-red-700 hover:bg-red-50"
+                                    className="cursor-pointer absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto w-auto text-red-500 hover:text-red-700 hover:bg-red-50"
                                     onClick={() => handleDeleteComment(comment.id)}
                                     title="Eliminar comentario"
                                 >
-                                    <MdDelete size={14} />
+                                    <MdDelete style={{ width: '25px', height: '25px' }} />
                                 </Button>
-                                
+
                                 <p className="text-sm text-gray-700 pr-8">{comment.text}</p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                     {comment.date ? format(new Date(comment.date), "PPpp") : "Unknown date"}
