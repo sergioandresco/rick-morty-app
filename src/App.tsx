@@ -1,35 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { SignIn, SignUp } from "@clerk/clerk-react";
+import ProtectedRoute from "./protectedRoute";
+
+const HomePage = lazy(() => import("./views/home"));
+const DashboardPage = lazy(() => import("./views/dashboard"));
+const CharacterDetailPage = lazy(() => import("./pages/characterDetailPage"));
+const FavoritesPage = lazy(() => import("./pages/favoritesPage"));
+const CharacterDetailMobilePage = lazy(() => import("./components/characterDetail/characterDetailMobile"));
+const FavoritesMobilePage = lazy(() => import("./pages/favoritesPage/favoritesMobilePage"));
+
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <HomePage />,
+	},
+	{
+		path: "/sign-in/*",
+		element: (
+			<SignIn
+				routing="path"
+				path="/sign-in"
+			/>
+		),
+	},
+	{
+		path: "/sign-up/*",
+		element: (
+			<SignUp
+				routing="path"
+				path="/sign-up"
+			/>
+		),
+	},
+	{
+		path: "/characters",
+		element: (
+			<ProtectedRoute allowedRoles={["admin", "user"]}>
+				<Suspense fallback={<div>Loading...</div>}>
+					<DashboardPage />
+				</Suspense>
+			</ProtectedRoute>
+		),
+		children: [
+			{
+				path: ":id",
+				element: (
+					<Suspense fallback={<div>Loading character details...</div>}>
+						<CharacterDetailPage />
+					</Suspense>
+				),
+			},
+			{
+				path: "favorites",
+				element: (
+					<Suspense fallback={<div>Loading favorites...</div>}>
+						<FavoritesPage />
+					</Suspense>
+				),
+			},
+		]
+	},
+	{
+		path: "/character-mobile/:id",
+		element: (
+			<ProtectedRoute allowedRoles={["admin", "user"]}>
+				<Suspense fallback={<div>Loading character details...</div>}>
+					<CharacterDetailMobilePage />
+				</Suspense>
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: "/favorites-mobile",
+		element: (
+			<ProtectedRoute allowedRoles={["admin", "user"]}>
+				<Suspense fallback={<div>Loading favorites...</div>}>
+					<FavoritesMobilePage />
+				</Suspense>
+			</ProtectedRoute>
+		),
+	}
+]);
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	return <RouterProvider router={router} />;
 }
 
 export default App
