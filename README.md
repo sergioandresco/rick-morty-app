@@ -1,69 +1,110 @@
-# React + TypeScript + Vite
+# 👽 Rick and Morty Characters app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Rick-and-Morty-Characters-app-banner](https://microsistem.s3.us-east-2.amazonaws.com/rick-morty-banner.png)
 
-Currently, two official plugins are available:
+> **Frontend application built for the Blossom technical interview**
+> Designed and developed with passion by Sergio Cobos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[![Vercel]()]()
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🌐 Demo Live
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+👉 []()
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🎯 About the App
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Rick and Morty Characters app** is a frontend web platform that lets users explore, filter, favorite, and comment on characters from the Rick and Morty universe. Built using the Rick and Morty GraphQL API, the app provides a modern, dynamic experience focused on user interaction and clean design.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🧪 How to Use the App
+
+To access all the data provided by the Rick and Morty API, you must first log in using GitHub, Google, Microsoft, or any other email provider. Once logged in, you'll be redirected to your personal dashboard, where you can:
+
+- Browse all characters
+- Filter by status, gender, and species
+- Mark characters as favorites
+- Soft-delete characters from your view
+- Leave personal comments for each character
+
+---
+
+## 🔍 Working with the Rick and Morty API
+
+This project uses the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql) via the `graphql` and `graphql-request` libraries to fetch specific data for each view using tailored queries.
+
+Since this is a frontend-only application without a real backend, **Zustand** is used to simulate a database. User data such as favorites, deleted characters, and comments are persisted using the browser's **localStorage**.
+
+Additionally, **Clerk** is implemented for secure authentication and protected routes, allowing access to character data only after successful login.
+
+---
+
+## 🌍 Routing with React Router DOM
+
+Routing is a key feature in this application. The structure is managed in `App.tsx` with both fixed and nested routes. It includes:
+
+- Route protection
+- Lazy loading for performance optimization
+- Dynamic routing for character details
+
+---
+
+## 🚀 Features
+
+-	🔎 Search and filter characters by status, species, or gender
+-	⭐ Mark characters as favorites
+-	💬 Leave comments on your favorite characters
+-	🗑️ Soft-delete characters from your personal list
+-	🔐 Access your personal dashboard after login
+-	⚡ Smooth performance and a responsive layout
+
+---
+
+## 🔐 Authentication
+
+To use the full functionality of the app, users must log in using Clerk, which supports GitHub, Google, Microsoft, and email-based authentication. Once authenticated, users are redirected to their own dashboard where they can interact with the characters list.
+
+---
+
+## 🛠️ Tech Stack
+
+- ⚛️ React 18
+- ⚡ Vite
+- 🎨 Tailwind CSS
+- 🧩 Shadcn UI (Radix-based component library)
+- 🧬 GraphQL + graphql-request
+- 🧭 React Router DOM
+- 🧠 Zustand (for state management)
+- 🔐 Clerk (authentication)
+
+---
+
+### Requirements
+
+- **Node.js** (Latest LTS version recommended) — [Download here](https://nodejs.org/)
+
+---
+
+## Procedure once the repository has been cloned
+
+#### Clone the repository
+
+    git clone https://github.com/sergioandresco/rick-morty-app.git
+
+#### Install dependencies
+
+    npm i
+
+#### Run develop server
+
+    npm run dev
+
+---
+
+## 📄 Licencia
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.

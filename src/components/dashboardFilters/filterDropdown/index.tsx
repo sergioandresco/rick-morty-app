@@ -36,7 +36,7 @@ function FilterDropdown({
                     </div>
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[250px] sm:w-[300px] p-4 bg-[#FFF] border-none shadow-[0px_2px_4px_0px_rgba(0,0,0,0.46)]" align="start">
+            <PopoverContent className="w-[300px] sm:w-[300px] p-4 bg-[#FFF] border-none shadow-[0px_2px_4px_0px_rgba(0,0,0,0.46)]" align="start">
                 <DashboardFilters filters={filters} onFilterChange={onFilterChange} />
             </PopoverContent>
         </Popover>

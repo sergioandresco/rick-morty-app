@@ -306,18 +306,18 @@ export function CharacterList({
             {hasNextPage && !loadingMore && (
                 <div className="text-center mt-4">
                     <button
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50"
+                        className="cursor-pointer px-4 py-2 bg-[#F3F4F6] text-black rounded hover:bg-[#EEE3FF] transition disabled:opacity-50"
                         onClick={handleLoadMore}
                         disabled={loadingMore}
                     >
-                        Cargar más
+                        Load more
                     </button>
                 </div>
             )}
 
             {!hasNextPage && characters.length > 0 && (
                 <div className="text-center mt-4 text-gray-500">
-                    <p>No hay más personajes para cargar</p>
+                    <p>There are no more characters to load.</p>
                 </div>
             )}
         </div>
