@@ -33,10 +33,10 @@ function FavoritesPage() {
         }
 
         client
-        .request<GetFavoriteCharacters>(GET_FAVORITES, { ids: favoriteIds })
-        .then((data) => {
-            setFavoriteCharacters(data.charactersByIds || []);
-        });
+            .request<GetFavoriteCharacters>(GET_FAVORITES, { ids: favoriteIds })
+            .then((data) => {
+                setFavoriteCharacters(data.charactersByIds || []);
+            });
     }, [favoriteIds]);
 
     const handleToggleFavorite = (id: string) => {
@@ -52,33 +52,33 @@ function FavoritesPage() {
     }
 
     return (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
             {favoriteCharacters.map((character) => (
                 <Card
                     key={character.id}
-                    className="flex items-center gap-4 cursor-pointer hover:bg-gray-100 transition"
                     onClick={() => navigate(`/characters/${character.id}`)}
+                    className="relative max-w-sm cursor-pointer transition hover:shadow-lg shadow-md bg-white rounded-2xl overflow-hidden border border-[#E5E7EB]"
                 >
                     <img
                         src={character.image}
                         alt={character.name}
-                        className="w-14 h-14 rounded-full object-cover"
+                        className="w-full h-48 object-cover"
                     />
-                    <CardContent className="p-4 flex-1">
-                        <p className="font-semibold">{character.name}</p>
-                        <p className="text-xs text-gray-500">
-                            {character.species} - {character.status}
+                    <CardContent className="p-4 space-y-1">
+                        <p className="text-lg font-semibold">{character.name}</p>
+                        <p className="text-sm text-gray-500">
+                            {character.species} • {character.status}
                         </p>
-                        <p className="text-xs text-gray-400">{character.gender}</p>
+                        <p className="text-sm text-gray-400">{character.gender}</p>
                     </CardContent>
                     <button
-                        className="text-green-500 hover:text-red-500 p-2"
+                        className="absolute top-3 right-3 text-green-500 hover:text-red-600 z-10"
                         onClick={(e) => {
                             e.stopPropagation();
                             handleToggleFavorite(character.id);
                         }}
                     >
-                        <FaHeart size={20} />
+                        <FaHeart size={22} />
                     </button>
                 </Card>
             ))}

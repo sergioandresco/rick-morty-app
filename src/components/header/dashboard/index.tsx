@@ -48,13 +48,13 @@ export function HeaderDashboard() {
                 <nav className="hidden sm:flex items-center gap-4">
                     <Link
                         to="/characters"
-                        className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
+                        className="cursor-pointer text-sm font-medium text-gray-700 px-3 py-2 rounded-md hover:bg-primary-100 hover:text-primary-700 transition-colors"
                     >
                         Characters
                     </Link>
                     <button
                         onClick={handleFavoritesClick}
-                        className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
+                        className="cursor-pointer text-sm font-medium text-gray-700 px-3 py-2 rounded-md hover:bg-primary-100 hover:text-primary-700 transition-colors"
                     >
                         Favorites
                     </button>
@@ -82,13 +82,13 @@ export function HeaderDashboard() {
                                 <div className="flex flex-col items-center gap-4">
                                     <Link
                                         to="/characters"
-                                        className="text-base font-medium text-gray-700 hover:text-primary-600"
+                                        className="text-base font-medium text-gray-700 px-3 py-2 rounded-md hover:bg-primary-100 hover:text-primary-700 transition-colors"
                                     >
                                         Characters
                                     </Link>
                                     <button
                                         onClick={handleFavoritesClick}
-                                        className="text-base font-medium text-gray-700 hover:text-primary-600"
+                                        className="text-base font-medium text-gray-700 px-3 py-2 rounded-md hover:bg-primary-100 hover:text-primary-700 transition-colors"
                                     >
                                         Favorites
                                     </button>
