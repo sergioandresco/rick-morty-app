@@ -80,6 +80,7 @@ To use the full functionality of the app, users must log in using Clerk, which s
 - 🧭 React Router DOM
 - 🧠 Zustand (for state management)
 - 🔐 Clerk (authentication)
+- 🚀 Vercel
 
 ---
 

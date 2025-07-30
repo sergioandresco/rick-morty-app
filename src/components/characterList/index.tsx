@@ -6,6 +6,7 @@ import type { GetCharactersResponse } from "@/types/character";
 import type { GetFavoriteCharacters } from "@/types/favoriteCharacters";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from 'sonner';
 import { FaHeart } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
@@ -94,6 +95,7 @@ export function CharacterList({
 
     const handleSoftDelete = (id: string) => {
         setDeletedCharacters((prev) => [...prev, id]);
+        toast.error("Character soft deleted");
     };
 
     const handleCharacterClick = (characterId: string) => {
@@ -164,8 +166,10 @@ export function CharacterList({
     const toggleFavorite = (id: string) => {
         if (favorites.includes(id)) {
             removeFavorite(id);
+            toast.error("Character removed from favorites");
         } else {
             addFavorite(id);
+            toast.success("Character added to favorites");
         }
     };
 
@@ -173,6 +177,7 @@ export function CharacterList({
         const nextPage = page + 1;
         setPage(nextPage);
         loadCharacters(nextPage, true);
+        toast.info("Loading more characters...");
     };
 
     if (loading && characters.length === 0) {
