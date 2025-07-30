@@ -5,13 +5,14 @@
 > **Frontend application built for the Blossom technical interview**
 > Designed and developed with passion by Sergio Cobos
 
-[![Vercel]()]()
+[![Vercel](https://vercelbadge.vercel.app/api/sergioandresco/rick-morty-app)](https://rick-morty-app-kappa.vercel.app/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
 ## 🌐 Demo Live
 
-👉 []()
+👉 [https://rick-morty-app-kappa.vercel.app/](https://rick-morty-app-kappa.vercel.app/)
 
 ---
 
@@ -80,6 +81,7 @@ To use the full functionality of the app, users must log in using Clerk, which s
 - 🧭 React Router DOM
 - 🧠 Zustand (for state management)
 - 🔐 Clerk (authentication)
+- 🚀 Vercel
 
 ---
 

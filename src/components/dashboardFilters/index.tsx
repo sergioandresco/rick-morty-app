@@ -1,4 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 
 interface FilterState {
     status: string;
@@ -17,6 +18,7 @@ export const DashboardFilters = ({ filters, onFilterChange }: DashboardFiltersPr
     const handleChange = (key: keyof FilterState, value: string) => {
         const newFilters = { ...filters, [key]: value };
         onFilterChange(newFilters);
+        toast.success('Filters updated successfully!')
     };
 
     return (

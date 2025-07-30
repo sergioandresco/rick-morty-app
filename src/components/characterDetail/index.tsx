@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useCommentsStore } from "@/store/useCommentsStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
+import { toast } from "sonner";
 import { format } from "date-fns";
 import { MdDelete } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
@@ -67,14 +68,14 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
     const handleSaveComment = () => {
         if (newComment.trim()) {
             addComment(characterId, newComment.trim());
+            toast.success("Comment added successfully!");
             setNewComment("");
         }
     };
 
     const handleDeleteComment = (commentId: string) => {
-        if (window.confirm("¿Estás seguro de que quieres eliminar este comentario?")) {
-            removeComment(characterId, commentId);
-        }
+        removeComment(characterId, commentId);
+        toast.error("Comment deleted successfully!");
     };
 
     if (loading) return <Skeleton className="w-full h-96 rounded-xl" />;
