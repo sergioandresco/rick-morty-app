@@ -1,10 +1,37 @@
 import { SignedIn, UserButton } from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import GifResponsive from '../../../assets/morty.gif';
 
 export function HeaderDashboard() {
+
+    const navigate = useNavigate();
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkScreen = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkScreen();
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
+
+    const navigateToFavorites = () => {
+        if (isMobile) {
+            navigate("/favorites-mobile");
+        } else {
+            navigate("/characters/favorites");
+        }
+    };
+
+    const handleFavoritesClick = () => {
+        navigateToFavorites();
+    };
+
     return (
         <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
             <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -18,7 +45,6 @@ export function HeaderDashboard() {
                     </h4>
                 </Link>
 
-
                 <nav className="hidden sm:flex items-center gap-4">
                     <Link
                         to="/characters"
@@ -26,12 +52,12 @@ export function HeaderDashboard() {
                     >
                         Characters
                     </Link>
-                    <Link
-                        to="/characters/favorites"
+                    <button
+                        onClick={handleFavoritesClick}
                         className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
                     >
                         Favorites
-                    </Link>
+                    </button>
                     <SignedIn>
                         <UserButton
                             afterSignOutUrl="/"
@@ -60,12 +86,12 @@ export function HeaderDashboard() {
                                     >
                                         Characters
                                     </Link>
-                                    <Link
-                                        to="/characters/favorites"
+                                    <button
+                                        onClick={handleFavoritesClick}
                                         className="text-base font-medium text-gray-700 hover:text-primary-600"
                                     >
                                         Favorites
-                                    </Link>
+                                    </button>
                                     <SignedIn>
                                         <UserButton
                                             afterSignOutUrl="/"

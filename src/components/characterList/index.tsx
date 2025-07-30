@@ -58,13 +58,25 @@ export function CharacterList({
     const [loadingMore, setLoadingMore] = useState(false);
     const [page, setPage] = useState(1);
     const [hasNextPage, setHasNextPage] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+
     const navigate = useNavigate();
+
     const favorites = useFavoritesStore((state) => state.favoriteIds);
     const addFavorite = useFavoritesStore((state) => state.addFavorite);
     const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
     const [deletedCharacters, setDeletedCharacters] = useState<string[]>([]);
-
     const [favoriteCharacters, setFavoriteCharacters] = useState<any[]>([]);
+
+    useEffect(() => {
+        const checkScreen = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkScreen();
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
 
     useEffect(() => {
         if (favorites.length === 0) {
@@ -82,6 +94,14 @@ export function CharacterList({
 
     const handleSoftDelete = (id: string) => {
         setDeletedCharacters((prev) => [...prev, id]);
+    };
+
+    const handleCharacterClick = (characterId: string) => {
+        if (isMobile) {
+            navigate(`/character-mobile/${characterId}`);
+        } else {
+            navigate(`/characters/${characterId}`);
+        }
     };
 
     const filteredCharacters = characters
@@ -178,7 +198,7 @@ export function CharacterList({
                         <Card
                             key={character.id}
                             className="flex flex-row border-0 border-t border-t-[#E5E7EB] rounded-none shadow-none p-0 m-0"
-                            onClick={() => navigate(`/characters/${character.id}`)}
+                            onClick={() => handleCharacterClick(character.id)}
                         >
                             <div
                                 className="w-full flex flex-row px-2 cursor-pointer hover:bg-[#EEE3FF] transition m-0 rounded-[8px]"
@@ -230,10 +250,10 @@ export function CharacterList({
                 <Card
                     key={character.id}
                     className="flex flex-row border-0 border-t border-t-[#E5E7EB] rounded-none shadow-none p-0 m-0"
-                    onClick={() => navigate(`/characters/${character.id}`)}
+                    onClick={() => handleCharacterClick(character.id)}
                 >
                     <div
-                        className="w-full flex flex-row px-2 cursor-pointer hover:bg-[#EEE3FF] transition m-0 rounded-[8px]"
+                        className="w-full flex flex-row px-2 cursor-pointer hover:bg-[#EEE3FF] transition m-0 rounded-[8px] justify-between md:justify-normal"
                     >
                         <div className="flex items-center gap-1">
                             <img

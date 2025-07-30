@@ -129,7 +129,7 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
                     <Button
                         onClick={handleSaveComment}
                         disabled={!newComment.trim()}
-                        className={`max-w-[400px] min-w-[400px] mt-2 rounded-[8px] transition-colors ${newComment.trim()
+                        className={`max-w-[400px] min-w-[200px] md:min-w-[400px] mt-2 rounded-[8px] transition-colors ${newComment.trim()
                                 ? "bg-[#8054C7] text-white cursor-pointer"
                                 : "bg-[#F3F4F6] text-gray-400 cursor-not-allowed"
                             }`}

@@ -7,56 +7,80 @@ const HomePage = lazy(() => import("./views/home"));
 const DashboardPage = lazy(() => import("./views/dashboard"));
 const CharacterDetailPage = lazy(() => import("./pages/characterDetailPage"));
 const FavoritesPage = lazy(() => import("./pages/favoritesPage"));
+const CharacterDetailMobilePage = lazy(() => import("./components/characterDetail/characterDetailMobile"));
+const FavoritesMobilePage = lazy(() => import("./pages/favoritesPage/favoritesMobilePage"));
 
 const router = createBrowserRouter([
 	{
-	  path: "/",
-	  element: <HomePage />,
+		path: "/",
+		element: <HomePage />,
 	},
 	{
-	  path: "/sign-in/*",
-	  element: (
-		<SignIn
-		  routing="path"
-		  path="/sign-in"
-		/>
-	  ),
+		path: "/sign-in/*",
+		element: (
+			<SignIn
+				routing="path"
+				path="/sign-in"
+			/>
+		),
 	},
 	{
-	  path: "/sign-up/*",
-	  element: (
-		<SignUp
-		  routing="path"
-		  path="/sign-up"
-		/>
-	  ),
+		path: "/sign-up/*",
+		element: (
+			<SignUp
+				routing="path"
+				path="/sign-up"
+			/>
+		),
 	},
 	{
-    path: "/characters",
-    element: (
-      <ProtectedRoute allowedRoles={["admin", "user"]}>
-		<Suspense fallback={<div>Loading...</div>}>
-		  <DashboardPage />
-		</Suspense>
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: ":id",
-        element: 
-			<Suspense fallback={<div>Loading character details...</div>}>
-				<CharacterDetailPage /> 
-			</Suspense>,
-      },
-      {
-        path: "favorites",
-        element: 
-			<Suspense fallback={<div>Loading favorites...</div>}>
-				<FavoritesPage />
-			</Suspense>,
-      },
-    ],
-  },
+		path: "/characters",
+		element: (
+			<ProtectedRoute allowedRoles={["admin", "user"]}>
+				<Suspense fallback={<div>Loading...</div>}>
+					<DashboardPage />
+				</Suspense>
+			</ProtectedRoute>
+		),
+		children: [
+			{
+				path: ":id",
+				element: (
+					<Suspense fallback={<div>Loading character details...</div>}>
+						<CharacterDetailPage />
+					</Suspense>
+				),
+			},
+			{
+				path: "favorites",
+				element: (
+					<Suspense fallback={<div>Loading favorites...</div>}>
+						<FavoritesPage />
+					</Suspense>
+				),
+			},
+		]
+	},
+	{
+		path: "/character-mobile/:id",
+		element: (
+			<ProtectedRoute allowedRoles={["admin", "user"]}>
+				<Suspense fallback={<div>Loading character details...</div>}>
+					<CharacterDetailMobilePage />
+				</Suspense>
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: "/favorites-mobile",
+		element: (
+			<ProtectedRoute allowedRoles={["admin", "user"]}>
+				<Suspense fallback={<div>Loading favorites...</div>}>
+					<FavoritesMobilePage />
+				</Suspense>
+			</ProtectedRoute>
+		),
+	}
 ]);
 
 function App() {
