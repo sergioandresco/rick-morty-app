@@ -5,13 +5,13 @@ import { CharacterDetail } from "@/components/characterDetail";
 
 export default function CharacterDetailMobile() {
 
-    const { id } = useParams<{ id: string }>();
+	const { id } = useParams<{ id: string }>();
 	const navigate = useNavigate();
 
 	if (!id) return <p className="p-6 text-red-600">Invalid character ID</p>;
 
-    return (
-        <div className="flex flex-col h-screen">
+	return (
+		<div className="flex flex-col h-screen">
 			<HeaderDashboard />
 			<div className="flex-1 overflow-y-auto bg-white">
 				<div className="p-4">
@@ -26,5 +26,5 @@ export default function CharacterDetailMobile() {
 				</div>
 			</div>
 		</div>
-    );
+	);
 }

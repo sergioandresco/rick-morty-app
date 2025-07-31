@@ -4,22 +4,22 @@ import About from "@/components/about";
 import Footer from "@/components/footer";
 
 export default function HomePage() {
-  return (
-    <>
-        <Header />
-        <section>
+	return (
+		<>
+			<Header />
+			<section>
 
-            <div className="min-h-screen">
-                <Hero />
-            </div>
+				<div className="min-h-screen">
+					<Hero />
+				</div>
 
-            <div className="min-h-screen">
-                <About />
-            </div>
+				<div className="min-h-screen">
+					<About />
+				</div>
 
-            <Footer />
-            
-        </section>
-    </>
-  );
+				<Footer />
+
+			</section>
+		</>
+	);
 }
