@@ -3,7 +3,7 @@
 ![Rick-and-Morty-Characters-app-banner](https://microsistem.s3.us-east-2.amazonaws.com/rick-morty-banner.png)
 
 > **Frontend application built for the Blossom technical interview**
-> Designed and developed with passion by Sergio Cobos
+> 🧑🏻‍💻 _Designed and developed with passion by Sergio Cobos._
 
 [![Vercel](https://vercelbadge.vercel.app/api/sergioandresco/rick-morty-app)](https://rick-morty-app-kappa.vercel.app/)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -41,6 +41,41 @@ This project uses the [Rick and Morty GraphQL API](https://rickandmortyapi.com/g
 Since this is a frontend-only application without a real backend, **Zustand** is used to simulate a database. User data such as favorites, deleted characters, and comments are persisted using the browser's **localStorage**.
 
 Additionally, **Clerk** is implemented for secure authentication and protected routes, allowing access to character data only after successful login.
+
+---
+
+## 🔌 API Usage
+
+This project integrates the Rick and Morty GraphQL API to retrieve and manage character data in real time. The application uses multiple dynamic queries to support core features such as:
+
+- 🔄 Paginated character listing for efficient data loading
+- 🎯 Advanced filtering by status, species, and gender
+- 🔍 Detailed character view, including origin and location information
+- ⭐ Favorites functionality, storing selected characters locally
+- 🗑️ Soft-deletion support for UI-only removal of characters
+
+Here’s an example of a character detail query:
+
+```graphql
+const GET_CHARACTER = gql`
+  query GetCharacter($id: ID!) {
+    character(id: $id) {
+      id
+      name
+      status
+      species
+      gender
+      image
+      origin {
+        name
+      }
+      location {
+        name
+      }
+    }
+  }
+`;
+```
 
 ---
 
@@ -107,6 +142,6 @@ To use the full functionality of the app, users must log in using Clerk, which s
 
 ---
 
-## 📄 Licencia
+## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.

@@ -49,7 +49,7 @@ function FavoritesMobilePage() {
     if (favoriteCharacters.length === 0) {
         return (
             <p className="text-center text-gray-500">
-                No hay personajes favoritos aún.
+                There are no favorite characters yet.
             </p>
         );
     }
@@ -64,7 +64,7 @@ function FavoritesMobilePage() {
                         className="flex items-center text-blue-600 hover:text-blue-800 mb-4 transition-colors"
                     >
                         <FaArrowLeft className="mr-2" />
-                        Volver a la lista
+                        Back to list
                     </button>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
                         {favoriteCharacters.map((character) => (

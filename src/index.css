@@ -8,16 +8,22 @@
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h4, h5, h6 {
+
+  h1,
+  h2,
+  h4,
+  h5,
+  h6 {
     font-family: 'GetSchwifty', sans-serif;
   }
 
-  p, h3 {
+  p,
+  h3 {
     font-family: 'Acorn', sans-serif;
   }
 }
 
-#root{
+#root {
   margin: 0 !important;
   padding: 0 !important;
   max-width: 100% !important;

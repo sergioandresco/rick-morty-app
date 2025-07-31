@@ -92,7 +92,7 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
                             className="w-24 h-24 rounded-full object-cover"
                         />
                         {isFav && (
-                            <FaHeart 
+                            <FaHeart
                                 className="absolute bottom-1 right-1 text-green-500 bg-white rounded-full p-[2px] w-5 h-5"
                                 style={{ width: '28px', height: '24px' }}
                             />
@@ -131,8 +131,8 @@ export function CharacterDetail({ characterId }: { characterId: string }) {
                         onClick={handleSaveComment}
                         disabled={!newComment.trim()}
                         className={`max-w-[400px] min-w-[200px] md:min-w-[400px] mt-2 rounded-[8px] transition-colors ${newComment.trim()
-                                ? "bg-[#8054C7] text-white cursor-pointer"
-                                : "bg-[#F3F4F6] text-gray-400 cursor-not-allowed"
+                            ? "bg-[#8054C7] text-white cursor-pointer"
+                            : "bg-[#F3F4F6] text-gray-400 cursor-not-allowed"
                             }`}
                     >
                         Save Comment

@@ -46,7 +46,7 @@ function FavoritesPage() {
     if (favoriteCharacters.length === 0) {
         return (
             <p className="text-center text-gray-500">
-                No hay personajes favoritos aún.
+                There are no favorite characters yet.
             </p>
         );
     }
